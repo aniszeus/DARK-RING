@@ -1,0 +1,21 @@
+name: Build doomslayer.dll
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unzip the project
+        shell: bash
+        run: |
+          unzip -q DARK-RING.zip
+          git clone --depth 1 https://github.com/Dasaav-dsv/fromsoftware-rs.git DARK-RING/erfps2/fromsoftware-rs
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        working-directory: DARK-RING/doomslayer
+        run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: doomslayer-dll
+          path: DARK-RING/doomslayer/target/release/doomslayer.dll
