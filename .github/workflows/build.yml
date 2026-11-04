@@ -12,6 +12,13 @@ jobs:
           unzip -q DARK-RING.zip
           git clone https://github.com/Dasaav-dsv/fromsoftware-rs.git DARK-RING/erfps2/fromsoftware-rs
           git -C DARK-RING/erfps2/fromsoftware-rs checkout 44a5603
+      - name: Find the shader compiler (dxc)
+        shell: pwsh
+        run: |
+          $dxc = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin" -Recurse -Filter dxc.exe -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match "x64" } | Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $dxc) { throw "dxc.exe not found in the Windows SDK" }
+          Write-Host "dxc: $($dxc.FullName)"
+          "DXC_PATH=$($dxc.FullName)" >> $env:GITHUB_ENV
       - uses: dtolnay/rust-toolchain@stable
       - name: Build doomslayer.dll
         working-directory: DARK-RING/doomslayer
