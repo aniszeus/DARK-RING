@@ -13,10 +13,15 @@ jobs:
           git clone https://github.com/Dasaav-dsv/fromsoftware-rs.git DARK-RING/erfps2/fromsoftware-rs
           git -C DARK-RING/erfps2/fromsoftware-rs checkout 44a5603
       - uses: dtolnay/rust-toolchain@stable
-      - name: Build
+      - name: Build doomslayer.dll
         working-directory: DARK-RING/doomslayer
+        run: cargo build --release
+      - name: Build erfps2.dll
+        working-directory: DARK-RING/erfps2
         run: cargo build --release
       - uses: actions/upload-artifact@v4
         with:
-          name: doomslayer-dll
-          path: DARK-RING/doomslayer/target/release/doomslayer.dll
+          name: dark-ring-dlls
+          path: |
+            DARK-RING/doomslayer/target/release/doomslayer.dll
+            DARK-RING/erfps2/target/release/erfps2.dll
