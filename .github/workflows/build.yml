@@ -26,9 +26,14 @@ jobs:
       - name: Build erfps2.dll
         working-directory: DARK-RING/erfps2
         run: cargo build --release
+      - name: Collect the DLLs
+        shell: bash
+        run: |
+          mkdir out
+          cp DARK-RING/doomslayer/target/release/doomslayer.dll out/
+          cp DARK-RING/erfps2/target/release/erfps2.dll out/
+          ls -l out
       - uses: actions/upload-artifact@v4
         with:
           name: dark-ring-dlls
-          path: |
-            DARK-RING/doomslayer/target/release/doomslayer.dll
-            DARK-RING/erfps2/target/release/erfps2.dll
+          path: out/*.dll
