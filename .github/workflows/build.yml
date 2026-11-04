@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir out
           cp DARK-RING/doomslayer/target/release/doomslayer.dll out/
-          cp DARK-RING/erfps2/target/release/erfps2.dll out/
+          cp "$(find DARK-RING/erfps2/target -name erfps2.dll -path '*release*' | head -n 1)" out/
           ls -l out
       - uses: actions/upload-artifact@v4
         with:
